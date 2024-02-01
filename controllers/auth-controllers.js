@@ -11,7 +11,7 @@ const signup = async (req, res, next) => {
         if(error){
             throw new BadRequest(error, StatusCodes.BAD_REQUEST)
         }
-        // const check = await User.find()
+        // // const check = await User.find()
         const user = await User.create({...req.body})
 
         const token = User.createToken(user._id)

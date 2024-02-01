@@ -57,12 +57,12 @@ const updateJob = async (req, res, next) => {
 
     try {
         if(!company || !position) {
-            throw new BadRequest('company and position are required')
+            throw new NotFoundError('company and position are required')
         }
 
         const job = await Jobs.findOneAndUpdate({createdBy: userId, _id: jobId}, req.body, {new: true, runValidators: true})
         if(!job) {
-            throw new BadRequest(`No Job with id - ${jobId}`)
+            throw new NotFoundError(`No Job with id - ${jobId}`)
         }
         res.status(StatusCodes.OK).json({job})
     } catch (error) {
@@ -71,9 +71,30 @@ const updateJob = async (req, res, next) => {
 }
 
 
+const deleteJob = async (req, res, next) => {
+  
+    const {
+        user: {userId},
+        params: {id}
+    } = req
+
+    try {
+        const job = await Jobs.findByIdAndDelete({_id: id, createdBy: userId})
+
+        if(!job) {
+            throw new BadRequest(`No job with id - ${id}`)
+        }
+
+        res.status(StatusCodes.OK).send()
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     createJob,
     getAllJobs,
     getSingleJob,
-    updateJob
+    updateJob,
+    deleteJob
 }
