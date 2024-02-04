@@ -20,7 +20,6 @@ const errorHandler = (err, req, res, next) => {
     }
     return res.status(customError.statusCode).json({message: customError.msg})
     // return res.status(500).json({err})
-
     // console.log(err);
 }
 

@@ -34,7 +34,7 @@ app.use(rateLimit({
 
 const start = async () => {
     try {
-        await connectDb('mongodb://localhost:27017/jobs')
+        await connectDb(process.env.MOGNO_URI)
         app.listen(process.env.PORT, () => console.log("App listening on port 4000"))
     } catch (error) {
         console.log('error connectiong', error.message)
