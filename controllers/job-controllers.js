@@ -57,7 +57,7 @@ const updateJob = async (req, res, next) => {
 
     try {
         if(!company || !position) {
-            throw new NotFoundError('company and position are required')
+            throw new BadRequest('company and position are required')
         }
 
         const job = await Jobs.findOneAndUpdate({createdBy: userId, _id: jobId}, req.body, {new: true, runValidators: true})
@@ -80,9 +80,8 @@ const deleteJob = async (req, res, next) => {
 
     try {
         const job = await Jobs.findByIdAndDelete({_id: id, createdBy: userId})
-
         if(!job) {
-            throw new BadRequest(`No job with id - ${id}`)
+            throw new NotFoundError(`No job with id - ${id}`)
         }
 
         res.status(StatusCodes.OK).send()
